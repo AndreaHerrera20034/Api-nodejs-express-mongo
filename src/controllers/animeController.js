@@ -5,7 +5,8 @@ const Anime = require('../models/anime');
 // Agregar o crear un nuevo anime a la categoria
 async function createAnime(req, res) {
     const { title, genre, episodes } = req.body;
-    const image = req.file ? req.file.filename : null; // Nombre del archivo subido
+    const image = req.file ? req.file.path : null; // Nombre del archivo subido
+    // console.log('Ruta de la imagen:', image);
     try {
         const newAnime = new Anime({ title, genre, episodes, image });
         await newAnime.save();
@@ -43,7 +44,7 @@ async function getOneAnime(req, res) {
 async function getAnimesFilter(req, res) {
     const { query } = req.query; // obtener el parametro de búsqueda desde la URL
     try{
-        let animes = await Anime.find(); 
+        let animes = await Anime.find();
 
         if(query){
             const search = query.toLowerCase();
@@ -62,14 +63,30 @@ async function getAnimesFilter(req, res) {
 // Actualizar un anime
 async function updateAnime(req, res) {
     const { id } = req.params;
-    const { title, genre, episodes, image } = req.body;
-    try{
-        const updateAnime = await Anime.findByIdAndUpdate(id, { title, genre, episodes, image }, { new: true});
-        res.json(updateAnime);
-    } catch(error){
+    const { title, genre, episodes } = req.body;
+    const image = req.file ? req.file.path : null;
+
+    const updateData = { title, genre, episodes };
+    if (image) updateData.image = image; // Actualizar imagen si se sube una nueva
+
+    try {
+        const updatedAnime = await Anime.findByIdAndUpdate(id, updateData, { new: true });
+        res.json(updatedAnime);
+    } catch (error) {
         res.status(400).json({ message: 'Error al actualizar el anime', error });
     }
 }
+// poner link de la imagen
+// async function updateAnime(req, res) {
+//     const { id } = req.params;
+//     const { title, genre, episodes, image } = req.body;
+//     try{
+//         const updateAnime = await Anime.findByIdAndUpdate(id, { title, genre, episodes, image }, { new: true});
+//         res.json(updateAnime);
+//     } catch(error){
+//         res.status(400).json({ message: 'Error al actualizar el anime', error });
+//     }
+// }
 
 // Eliminar un anime
 async function deleteAnime(req, res) {

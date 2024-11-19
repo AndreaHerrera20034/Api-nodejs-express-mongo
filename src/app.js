@@ -14,6 +14,7 @@ app.set('port', config.app.port);
 //middleware falta
 app.use(morgan('dev'));
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 // rutas url de la api    localhost:4000/api/animes
 app.use('/api', animes);

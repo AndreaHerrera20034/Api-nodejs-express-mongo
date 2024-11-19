@@ -6,7 +6,7 @@ const animeSchema = new Schema({
     title: { type: String, required: true },
     genre: { type: String, required: true},
     episodes: { type: Number, required: true },
-    image: { type: String, required: true}
+    image: { type: String, required: false}
 });
 
 // Crear el modelo
