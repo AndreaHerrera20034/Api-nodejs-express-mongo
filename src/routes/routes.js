@@ -14,6 +14,9 @@ router.get('/animes/:id', animeController.getOneAnime);
 router.put('/update/animes/:id', animeController.updateAnime);
 router.delete('/delete/anime/:id', animeController.deleteAnime);
 
+// Filtro de búsqueda
+router.get('/search/animes', animeController.getAnimesFilter);
+
 //Ejecutar con npm run dev
 
 // exportacion como react export default
